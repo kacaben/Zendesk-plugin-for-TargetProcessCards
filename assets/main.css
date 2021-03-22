@@ -1,0 +1,38 @@
+footer {
+  font-size: 10px;
+  padding-top: 20px;
+}
+
+.data {
+  color: #363;
+  padding-left: 6px;
+}
+
+#content td {
+	font-size: 12px;
+	padding-top: 2px;
+}
+
+.ticketCreated {
+	display: none;
+}
+
+tbody{
+	width: 100%;
+}
+
+.button input{
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+.submitted {
+  display: none;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+form textarea {
+width:100%;
+}

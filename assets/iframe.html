@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+	<link href="main.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="main.js" type="text/javascript"></script>
+</head>
+<body>
+
+<script id="requester-template" type="text/x-handlebars-template">
+
+<form id="createTP" accept-charset="UTF-8">
+<input type="hidden" name="zd_ticket_id" value="{{ticket_id}}">
+<input type="hidden" name="owner" value="{{agent}}">
+<input type="hidden" name="teams" value='{{teams}}'>
+<table>
+<tr>
+<td>Name:</td><td colspan="2"><textarea name="Title" rows="2">{{subject}}</textarea>
+</tr>
+<tr>
+<td>Org.:</td><td colspan="2"><input type="text" name="organization name" value="{{organization_name}}"></td>
+</tr>
+<tr>
+<td>Project:*</td><td colspan="2"><select name="Project" id="Project">
+  <!-- Droplist filled by main.js-->
+</select></td>
+</tr>
+<tr>
+<td>Severity:</td><td colspan="2"><select name="Severity">
+<option value="1">Blocking</option>
+<option value="2">Critical</option>
+<option value="3" selected>Normal</option>
+<option value="4">Small</option>
+<option value="6">[Empty]</option>
+</select></td>
+</tr>
+<td colspan="2">Customer Needs Informing:</td><td ><input type="checkbox" name="Customer Needs Informing" value="true" checked></td>
+</tr>
+<td colspan="2">Release Notes:</td><td><input type="checkbox" name="Release notes" value="true" checked></td>
+</tr>
+<tr>
+<td>Tags:</td><td colspan="2"><input type="text" name="Tags" value="Production"></td>
+</tr>
+<tr class="button">
+<td></td>
+<td>
+  <input type="button" value="Create Bug ticket"  onClick="submitForm('{{webhookBug}}')"></td>
+  <td><input type="button" value="Create Request" onClick="submitForm('{{webhookReq}}')"> </td>
+</tr>
+<tr><td colspan = "3">* Requests are automatically created in 'Product requests' project.</td></tr>
+</table>
+</form>
+</script>
+
+<script src="https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/handlebars@4.3.3/dist/handlebars.min.js"></script>
+
+<script type="text/javascript">
+
+function submitForm(url) {
+
+  var formJson = parseData('#createTP');
+
+  $.ajax({
+    url: url,
+    type: 'post',
+    dataType: 'json',
+    headers: {"Content-Type": "application/json" },
+    data: formJson
+  });
+
+  $(".submitted").show();
+    setTimeout(function() {
+    $('.submitted').fadeOut('fast');
+    }, 2000);
+
+  $('#content').hide();
+    setTimeout(function() {
+    $('#content').fadeIn('fast');
+    }, 2000);
+};
+
+function parseData() {
+  var formData = { };
+  $.each($('#createTP').serializeArray(), function() {
+  		formData[this.name] = this.value;
+  });
+  var formString = JSON.stringify(formData);
+  var res = formString.replaceAll("\"true\"", "true");
+  var res1 = res.replaceAll("\"false\"", "false");
+  var formJson = res1.replace(/\"(\d+)\"/ig,'$1');
+  return formJson;
+};
+
+</script>
+
+<div id="content"></div>
+<div class="submitted">Form was submitted.</div>
+
+
+</body>
+</html>
